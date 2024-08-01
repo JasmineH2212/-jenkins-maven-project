@@ -12,6 +12,14 @@ pipeline {
                 }
             }
         }
+        stage('Dependency Check') {
+            steps {
+                script {
+                    def dependencyCheckHome = tool name: 'Dependency-Check', type: 'org.jenkinsci.plugins.DependencyCheck.tools.DependencyCheckInstallation'
+                    sh "${dependencyCheckHome}/bin/dependency-check.sh --project MyProject --out . --scan hello-app/target"
+                }
+            }
+        }
         stage('Test') {
             steps {
                 sh 'mvn -f hello-app/pom.xml test'
@@ -24,3 +32,4 @@ pipeline {
         }
     }
 }
+
